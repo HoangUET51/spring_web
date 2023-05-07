@@ -1,10 +1,9 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.TimeZone;
 
 @Entity
 @Table(name = "student")
@@ -17,6 +16,28 @@ public class Students {
     private String name;
     @Column(name = "date")
     private LocalDate date;
+    @Column(name = "class_id", insertable = false, updatable = false)
+    private int classId;
+    @ManyToOne()
+    @JoinColumn(name = "class_id")
+    @JsonBackReference
+    private Classic classic;
+
+    public int getClassId() {
+        return classId;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
+    }
+
+    public Classic getClassic() {
+        return classic;
+    }
+
+    public void setClassic(Classic classic) {
+        this.classic = classic;
+    }
 
     public LocalDate getDate() {
         return date;
