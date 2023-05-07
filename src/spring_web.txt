@@ -1,0 +1,268 @@
+- Vào trang start.spring.io
+- Connect db postgresql
+
+## default connection pool
+spring.datasource.hikari.connectionTimeout=20000
+spring.datasource.hikari.maximumPoolSize=5
+
+## PostgreSQL
+spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+spring.datasource.username=postgres
+spring.datasource.password=password
+
+#drop n create table again, good for testing, comment this in production
+spring.jpa.hibernate.ddl-auto=create
+
+- anotation - chú thích
+- sử dụng @Autowired để khởi tạo auto
+- Ctrl + alt + T: thêm các câu điều kiện if else ....
+- Ctrl + alt + V: refactor
+- Ctrl + E: hiển thị list file đã tạo
+- Ctrl + D: nhân bản 1 dòng
+- Ctrl + Alt + L: format code
+- Ctrl + Alt + B: chuyển sang file sử dụng method
+- Ctrl + Shift + up/down: di chuyển lên xuống 1 dòng code
+- F6 đổi tên refactor tên file class
+- Ctrl + Y: xóa 1 đối tượng đã chọn
+- Ctrl + Shift + F7: highlight phần tử đã chọn giống nhau
+- file application.properties thay đổi port
+	server.port = 4000;
+- Run java as CLI
+  C1:
+	mvnw package
+	cd target
+	dir
+	java -jar [tenfile.jar]
+  C2:
+	mvnw spring-boot:run
+
+
+
+
+Constructor: su dung khoi tao cac doi tuong
+Co 2 loai constructor:
+- Constructor mac dinh:
+  + Cung cap gia tri mac dinh 0, null toi doi tuong duoc khoi tao
+  + Neu khong khoi tao constructor trinh bien dich tu dong tao constructor cho ban
+- Constructor co tham so
+  + Cung cap cac gia tri khac nhau cho cac doi tuong khac nhau
+Constructor Overloading - co the tao nhieu constructor trong class vs tham so truyen vao khac nhau
+      class Student5 {
+	 int id;
+	 String name;
+	 int age;
+
+	 Student5(int i, String n) {
+	  id = i;
+	  name = n;
+	 }
+
+	 Student5(int i, String n, int a) {
+	  id = i;
+	  name = n;
+	  age = a;
+	 }
+      };
+Tu khoa this: la mot bien tham chieu duoc su dung de tham chieu toi cac doi tuong cua lop hien tai
+- Co 6 cach su dung
+  + Tham chieu toi bien instance cua lop hien tai
+  public class Student11 {
+    int id;
+    String name;
+
+    Student11(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+  }
+  + Su dung this() goi constructor class hien tai
+  public class Student13 {
+    int id;
+    String name;
+    String city;
+
+    Student14(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    Student14(int id, String name, String city) {
+        this(id, name);// now no need to initialize id and name
+        this.city = city;
+    }
+  }
+
+  + Goi phuong thuc cua lop hien tai
+  public class Example3 {
+    void m() {
+        System.out.println("Gọi phương thức bằng từ khóa this");
+    }
+
+    void n() {
+        this.m();
+    }
+
+    void p() {
+        n();// trình biên dịch sẽ thêm this để gọi phương thức n() như this.n()
+    }
+  }
+  + Sử dụng this như một tham số của phương thức
+  public class Example4 {
+    void m(Example4 obj) {
+        System.out.println("Hello Java");
+    }
+
+    void p() {
+        m(this);
+    }
+  }
+  + Sử dụng this như tham số constructor
+  + Sử dụng this trả về instance của lớp hiện tại
+  	Kiểu trả về của phương thức là kiểu class (Không phải dữ liệu nguyên thủy)
+  class A {
+    A getA() {
+        return this;
+    }
+    void msg() {
+        System.out.println("Hello Java");
+    }
+  }
+
+  class Test1 {
+    	public static void main(String args[]) {
+   	  new A().getA().msg();
+        }
+  }
+
+Từ khóa super là biến tham chiếu sử dụng  tham chiếu trực tiếp đến đối tượng của lớp cha gần nhất.
+  + Tham chiếu trực tiếp đến biến instance của lớp cha
+class Vehicle {
+    int speed = 50;
+}
+
+public class Bike2 extends Vehicle {
+    int speed = 100;
+
+    void display() {
+        System.out.println(super.speed);//in speed của lớp Vehicle
+    }
+
+    public static void main(String args[]) {
+        Bike2 b = new Bike2();
+        b.display(); // 50
+
+    }
+}
+
+  + Sử dụng super(): gọi trực tiếp constructor của lớp cha. super() tự động thêm vào mỗi constructor class bởi trình biên dịch
+class Vehicle {
+    Vehicle() {
+        System.out.println("Vehicle is created");
+    }
+}
+
+class Bike2 extends Vehicle {
+    Bike2() {
+        super();//gọi Constructor của lớp cha
+        System.out.println("Bike is created");
+    }
+
+    public static void main(String args[]) {
+        Bike2 b = new Bike2();
+    }
+}
+
+  + super gọi trực tiếp phương thức của lớp cha
+
+class Person {
+    void message() {
+        System.out.println("welcome");
+    }
+}
+
+public class Student16 extends Person {
+    void message() {
+        System.out.println("welcome to java");
+    }
+
+    void display() {
+        message();// gọi phương thức message() của lớp hiện tại
+        super.message();// gọi phương thức message() của lớp cha
+    }
+
+    public static void main(String args[]) {
+        Student16 s = new Student16();
+        s.display();
+    }
+}
+
+Từ khóa final sử dụng hạn chế người dùng
+  + Biến final: không thể thay đổi giá trị, là hằng số
+  final int MAX_SPEED = 90;
+  + Phương thức final: không thể ghi đè lên phương thức final
+  final void run() {
+        System.out.println("running");
+  }
+  + Lớp final: không thể kế thừa lớp final
+  + Biến static final trống: một biến static final mà k được khởi tạo tại thời điểm khai báo thì đó là biến static final trống. Chỉ có thể được khởi tạo trong khối static
+
+  public class A {
+    static final int data; // Biến static final trống
+    static {
+        data = 50;
+    }
+
+    public static void main(String args[]) {
+        System.out.println(A.data);
+    }
+  }
+
+
+Từ khóa static dùng đề quản lý bộ nhớ
+  + Biến static:
+  	- tham chiếu thuộc tính chung của tất cả đối tượng
+  	- lấy bộ nhớ chỉ 1 lần trong class Area tại thời gian tải lớp đó
+
+public class Counter2 {
+    static int count = 0; // sẽ lấy bộ nhớ chỉ một lần
+
+    Counter2() {
+        count++;
+        System.out.println(count);
+    }
+
+    public static void main(String args[]) {
+
+        Counter2 c1 = new Counter2();// 1
+        Counter2 c2 = new Counter2();// 2
+        Counter2 c3 = new Counter2();// 3
+
+    }
+}
+
+  + Phương thức static
+  	- Một phương thức static thuộc lớp chứ không phải đối tượng của lớp.
+	- Một phương thức static gọi mà không cần tạo một instance của một lớp.
+	- Phương thức static có thể truy cập biến static và có thể thay đổi giá trị của nó.
+	- Ghi chú: Phương thức static không thể sử dụng biến non-static hoặc gọi trực tiếp đến biến non-static, từ khóa this, super không sử dụng được trong phương thức static
+
+  + Khối static
+  	- Được sử dụng để khởi tạo thành viên dữ liệu static.
+	- Nó được thực thi trước phương thức main tại lúc tải lớp.
+
+public class A2 {
+    //Khối static
+    static {
+        System.out.println("Khối static: hello !");
+    }
+
+    public static void main(String args[]) {
+        System.out.println("Main: hello !");
+    }
+}
+kq: Khối static: hello !, Main: hello !
+
+
+
+
+
